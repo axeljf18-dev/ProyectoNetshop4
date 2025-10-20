@@ -11,8 +11,8 @@ namespace ProyectoNetshop.BD
     {
         public static SqlConnection obtenerConexion()
         {
-            SqlConnection conexion = new SqlConnection("Server=LAPTOP-KCCIPSRT\\SQLEXPRESS;Database=proyectoT;Trusted_Connection=True;TrustServerCertificate=True;");
-            //SqlConnection conexion = new SqlConnection("Server=localhost;Database=proyectoT;Trusted_Connection=True;TrustServerCertificate=True;");
+            //SqlConnection conexion = new SqlConnection("Server=LAPTOP-KCCIPSRT\\SQLEXPRESS;Database=proyectoT;Trusted_Connection=True;TrustServerCertificate=True;");
+            SqlConnection conexion = new SqlConnection("Server=localhost;Database=proyectoT;Trusted_Connection=True;TrustServerCertificate=True;");
 
             conexion.Open();
 

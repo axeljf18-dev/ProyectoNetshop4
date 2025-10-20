@@ -190,7 +190,7 @@ namespace ProyectoNetshop.formularios
                 HeaderText = "Activo",
                 DataPropertyName = "ActivoTexto"
             });
-
+            
             // Asigno la lista ya procesada
             dgvUsuarios.DataSource = usuarios;
         }
