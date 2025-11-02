@@ -86,7 +86,7 @@ namespace vistaDeProyectoC
             }
 
             // Construir cadena de conexión; adaptá Server si tu instancia es distinta
-            _cadenaConexion = $"Server=LAPTOP-KCCIPSRT\\SQLEXPRESS;Database={nombreBD};Trusted_Connection=True;TrustServerCertificate=True;";
+            _cadenaConexion = $"Server=localhost;Database={nombreBD};Trusted_Connection=True;TrustServerCertificate=True;";
 
             try
             {

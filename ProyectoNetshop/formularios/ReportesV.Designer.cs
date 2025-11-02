@@ -29,21 +29,29 @@
         private void InitializeComponent()
         {
             panel2 = new Panel();
+            tbBusquedaPrecioMinProductoDF = new TextBox();
+            tbBusquedaNroFProductoDF = new TextBox();
             tbNombreVendedorReporte = new TextBox();
+            tbBusquedaPrecioMaxProductoDF = new TextBox();
             label2 = new Label();
+            tbBusquedaNombreProductoDF = new TextBox();
             tbDniVendedorReporte = new TextBox();
+            label3 = new Label();
             panel1 = new Panel();
-            BGenerarReporteVendedor = new Button();
             label1 = new Label();
             label7 = new Label();
             fechaHastaVendedor = new DateTimePicker();
             fechaDesdeVendedor = new DateTimePicker();
             dgvReporteVentaVendedor = new DataGridView();
-            idVenta = new DataGridViewTextBoxColumn();
+            nroFactura = new DataGridViewTextBoxColumn();
             fechaVenta = new DataGridViewTextBoxColumn();
-            tipoFactura = new DataGridViewTextBoxColumn();
             clienteVenta = new DataGridViewTextBoxColumn();
+            tipoFactura = new DataGridViewTextBoxColumn();
+            cantidad = new DataGridViewTextBoxColumn();
+            precioUnitario = new DataGridViewTextBoxColumn();
             totalVenta = new DataGridViewTextBoxColumn();
+            estado = new DataGridViewTextBoxColumn();
+            producto = new DataGridViewTextBoxColumn();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReporteVentaVendedor).BeginInit();
@@ -52,26 +60,55 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(0, 0, 64);
+            panel2.Controls.Add(tbBusquedaPrecioMinProductoDF);
+            panel2.Controls.Add(tbBusquedaNroFProductoDF);
             panel2.Controls.Add(tbNombreVendedorReporte);
+            panel2.Controls.Add(tbBusquedaPrecioMaxProductoDF);
             panel2.Controls.Add(label2);
+            panel2.Controls.Add(tbBusquedaNombreProductoDF);
             panel2.Controls.Add(tbDniVendedorReporte);
+            panel2.Controls.Add(label3);
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(288, 0);
-            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Location = new Point(252, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(889, 133);
+            panel2.Size = new Size(827, 149);
             panel2.TabIndex = 4;
-            panel2.Paint += panel2_Paint;
+            // 
+            // tbBusquedaPrecioMinProductoDF
+            // 
+            tbBusquedaPrecioMinProductoDF.Location = new Point(512, 76);
+            tbBusquedaPrecioMinProductoDF.Margin = new Padding(3, 2, 3, 2);
+            tbBusquedaPrecioMinProductoDF.Name = "tbBusquedaPrecioMinProductoDF";
+            tbBusquedaPrecioMinProductoDF.PlaceholderText = "Precio minimo";
+            tbBusquedaPrecioMinProductoDF.Size = new Size(111, 23);
+            tbBusquedaPrecioMinProductoDF.TabIndex = 15;
+            // 
+            // tbBusquedaNroFProductoDF
+            // 
+            tbBusquedaNroFProductoDF.Location = new Point(128, 103);
+            tbBusquedaNroFProductoDF.Margin = new Padding(3, 2, 3, 2);
+            tbBusquedaNroFProductoDF.Name = "tbBusquedaNroFProductoDF";
+            tbBusquedaNroFProductoDF.PlaceholderText = "Numero de factura";
+            tbBusquedaNroFProductoDF.Size = new Size(111, 23);
+            tbBusquedaNroFProductoDF.TabIndex = 14;
             // 
             // tbNombreVendedorReporte
             // 
-            tbNombreVendedorReporte.Location = new Point(304, 51);
-            tbNombreVendedorReporte.Margin = new Padding(3, 4, 3, 4);
+            tbNombreVendedorReporte.Location = new Point(266, 38);
             tbNombreVendedorReporte.Name = "tbNombreVendedorReporte";
             tbNombreVendedorReporte.ReadOnly = true;
-            tbNombreVendedorReporte.Size = new Size(252, 27);
+            tbNombreVendedorReporte.Size = new Size(221, 23);
             tbNombreVendedorReporte.TabIndex = 22;
             tbNombreVendedorReporte.Text = "Nombre completo del vendedor";
+            // 
+            // tbBusquedaPrecioMaxProductoDF
+            // 
+            tbBusquedaPrecioMaxProductoDF.Location = new Point(512, 103);
+            tbBusquedaPrecioMaxProductoDF.Margin = new Padding(3, 2, 3, 2);
+            tbBusquedaPrecioMaxProductoDF.Name = "tbBusquedaPrecioMaxProductoDF";
+            tbBusquedaPrecioMaxProductoDF.PlaceholderText = "Precio maximo";
+            tbBusquedaPrecioMaxProductoDF.Size = new Size(111, 23);
+            tbBusquedaPrecioMaxProductoDF.TabIndex = 13;
             // 
             // label2
             // 
@@ -79,49 +116,53 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.ButtonFace;
-            label2.Location = new Point(65, 52);
+            label2.Location = new Point(57, 39);
             label2.Name = "label2";
-            label2.Size = new Size(83, 29);
+            label2.Size = new Size(64, 22);
             label2.TabIndex = 21;
             label2.Text = "Vendedor";
             // 
+            // tbBusquedaNombreProductoDF
+            // 
+            tbBusquedaNombreProductoDF.Location = new Point(266, 103);
+            tbBusquedaNombreProductoDF.Margin = new Padding(3, 2, 3, 2);
+            tbBusquedaNombreProductoDF.Name = "tbBusquedaNombreProductoDF";
+            tbBusquedaNombreProductoDF.PlaceholderText = "Nombre del producto";
+            tbBusquedaNombreProductoDF.Size = new Size(217, 23);
+            tbBusquedaNombreProductoDF.TabIndex = 12;
+            // 
             // tbDniVendedorReporte
             // 
-            tbDniVendedorReporte.Location = new Point(146, 51);
-            tbDniVendedorReporte.Margin = new Padding(3, 4, 3, 4);
+            tbDniVendedorReporte.Location = new Point(128, 38);
             tbDniVendedorReporte.Name = "tbDniVendedorReporte";
             tbDniVendedorReporte.ReadOnly = true;
-            tbDniVendedorReporte.Size = new Size(126, 27);
+            tbDniVendedorReporte.Size = new Size(111, 23);
             tbDniVendedorReporte.TabIndex = 2;
-            tbDniVendedorReporte.Text = "DNI del Vendodor";
-            tbDniVendedorReporte.TextChanged += tbDniVendedorReporte_TextChanged;
+            tbDniVendedorReporte.Text = "DNI del Vendedor";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic);
+            label3.ForeColor = SystemColors.ButtonFace;
+            label3.Location = new Point(48, 103);
+            label3.Name = "label3";
+            label3.Size = new Size(73, 22);
+            label3.TabIndex = 11;
+            label3.Text = "Buscar por:";
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(0, 0, 64);
-            panel1.Controls.Add(BGenerarReporteVendedor);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(fechaHastaVendedor);
             panel1.Controls.Add(fechaDesdeVendedor);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(288, 699);
+            panel1.Size = new Size(252, 582);
             panel1.TabIndex = 3;
-            // 
-            // BGenerarReporteVendedor
-            // 
-            BGenerarReporteVendedor.Cursor = Cursors.Hand;
-            BGenerarReporteVendedor.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
-            BGenerarReporteVendedor.Location = new Point(14, 541);
-            BGenerarReporteVendedor.Margin = new Padding(3, 4, 3, 4);
-            BGenerarReporteVendedor.Name = "BGenerarReporteVendedor";
-            BGenerarReporteVendedor.Size = new Size(255, 50);
-            BGenerarReporteVendedor.TabIndex = 21;
-            BGenerarReporteVendedor.Text = "Generar Reporte";
-            BGenerarReporteVendedor.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -129,9 +170,9 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(118, 184);
+            label1.Location = new Point(103, 138);
             label1.Name = "label1";
-            label1.Size = new Size(57, 29);
+            label1.Size = new Size(44, 22);
             label1.TabIndex = 20;
             label1.Text = "Desde";
             // 
@@ -141,45 +182,44 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label7.ForeColor = SystemColors.ButtonFace;
-            label7.Location = new Point(118, 301);
+            label7.Location = new Point(103, 226);
             label7.Name = "label7";
-            label7.Size = new Size(54, 29);
+            label7.Size = new Size(42, 22);
             label7.TabIndex = 19;
             label7.Text = "Hasta";
             // 
             // fechaHastaVendedor
             // 
-            fechaHastaVendedor.Location = new Point(40, 335);
-            fechaHastaVendedor.Margin = new Padding(3, 4, 3, 4);
+            fechaHastaVendedor.Location = new Point(35, 251);
             fechaHastaVendedor.Name = "fechaHastaVendedor";
-            fechaHastaVendedor.Size = new Size(209, 27);
+            fechaHastaVendedor.Size = new Size(183, 23);
             fechaHastaVendedor.TabIndex = 18;
             // 
             // fechaDesdeVendedor
             // 
-            fechaDesdeVendedor.Location = new Point(40, 217);
-            fechaDesdeVendedor.Margin = new Padding(3, 4, 3, 4);
+            fechaDesdeVendedor.Location = new Point(35, 163);
             fechaDesdeVendedor.Name = "fechaDesdeVendedor";
-            fechaDesdeVendedor.Size = new Size(209, 27);
+            fechaDesdeVendedor.Size = new Size(183, 23);
             fechaDesdeVendedor.TabIndex = 17;
             // 
             // dgvReporteVentaVendedor
             // 
             dgvReporteVentaVendedor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReporteVentaVendedor.Columns.AddRange(new DataGridViewColumn[] { idVenta, fechaVenta, tipoFactura, clienteVenta, totalVenta });
-            dgvReporteVentaVendedor.Location = new Point(398, 184);
+            dgvReporteVentaVendedor.Columns.AddRange(new DataGridViewColumn[] { nroFactura, fechaVenta, clienteVenta, tipoFactura, cantidad, precioUnitario, totalVenta, estado, producto });
+            dgvReporteVentaVendedor.Dock = DockStyle.Fill;
+            dgvReporteVentaVendedor.Location = new Point(252, 149);
+            dgvReporteVentaVendedor.Margin = new Padding(3, 2, 3, 2);
             dgvReporteVentaVendedor.Name = "dgvReporteVentaVendedor";
             dgvReporteVentaVendedor.RowHeadersWidth = 51;
-            dgvReporteVentaVendedor.Size = new Size(679, 188);
+            dgvReporteVentaVendedor.Size = new Size(827, 433);
             dgvReporteVentaVendedor.TabIndex = 5;
-            dgvReporteVentaVendedor.CellContentClick += dgvReporteVentaVendedor_CellContentClick;
             // 
-            // idVenta
+            // nroFactura
             // 
-            idVenta.HeaderText = "ID Venta";
-            idVenta.MinimumWidth = 6;
-            idVenta.Name = "idVenta";
-            idVenta.Width = 125;
+            nroFactura.HeaderText = "Nro de Factura";
+            nroFactura.MinimumWidth = 6;
+            nroFactura.Name = "nroFactura";
+            nroFactura.Width = 125;
             // 
             // fechaVenta
             // 
@@ -188,6 +228,13 @@
             fechaVenta.Name = "fechaVenta";
             fechaVenta.Width = 125;
             // 
+            // clienteVenta
+            // 
+            clienteVenta.HeaderText = "Cliente";
+            clienteVenta.MinimumWidth = 6;
+            clienteVenta.Name = "clienteVenta";
+            clienteVenta.Width = 125;
+            // 
             // tipoFactura
             // 
             tipoFactura.HeaderText = "Tipo de Factura";
@@ -195,12 +242,15 @@
             tipoFactura.Name = "tipoFactura";
             tipoFactura.Width = 125;
             // 
-            // clienteVenta
+            // cantidad
             // 
-            clienteVenta.HeaderText = "Cliente";
-            clienteVenta.MinimumWidth = 6;
-            clienteVenta.Name = "clienteVenta";
-            clienteVenta.Width = 125;
+            cantidad.HeaderText = "Cantidad";
+            cantidad.Name = "cantidad";
+            // 
+            // precioUnitario
+            // 
+            precioUnitario.HeaderText = "Precio Unitario";
+            precioUnitario.Name = "precioUnitario";
             // 
             // totalVenta
             // 
@@ -209,16 +259,27 @@
             totalVenta.Name = "totalVenta";
             totalVenta.Width = 125;
             // 
+            // estado
+            // 
+            estado.HeaderText = "Estado";
+            estado.Name = "estado";
+            // 
+            // producto
+            // 
+            producto.HeaderText = "Producto";
+            producto.Name = "producto";
+            // 
             // ReportesV
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SlateGray;
-            ClientSize = new Size(1177, 699);
+            ClientSize = new Size(1079, 582);
             Controls.Add(dgvReporteVentaVendedor);
             Controls.Add(panel2);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "ReportesV";
             Text = "Reporte del Vendedor";
             Load += ReportesV_Load;
@@ -241,12 +302,20 @@
         private Label label7;
         private DateTimePicker fechaHastaVendedor;
         private DateTimePicker fechaDesdeVendedor;
-        private Button BGenerarReporteVendedor;
         private DataGridView dgvReporteVentaVendedor;
-        private DataGridViewTextBoxColumn idVenta;
+        private DataGridViewTextBoxColumn nroFactura;
         private DataGridViewTextBoxColumn fechaVenta;
-        private DataGridViewTextBoxColumn tipoFactura;
         private DataGridViewTextBoxColumn clienteVenta;
+        private DataGridViewTextBoxColumn tipoFactura;
+        private DataGridViewTextBoxColumn cantidad;
+        private DataGridViewTextBoxColumn precioUnitario;
         private DataGridViewTextBoxColumn totalVenta;
+        private DataGridViewTextBoxColumn estado;
+        private DataGridViewTextBoxColumn producto;
+        private TextBox tbBusquedaPrecioMinProductoDF;
+        private TextBox tbBusquedaNroFProductoDF;
+        private TextBox tbBusquedaPrecioMaxProductoDF;
+        private TextBox tbBusquedaNombreProductoDF;
+        private Label label3;
     }
 }
