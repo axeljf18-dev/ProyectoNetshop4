@@ -40,6 +40,9 @@ namespace ProyectoNetshop.formularios
             // Preparar grilla inicialmente oculta
             dgvReporteVentaVendedor.Visible = false;
 
+            // Los labels KPI starts hidden
+            HideKPILabels();
+
             // Enlazar TextChanged para filtrado inmediato (si existen los TextBox)
             WireSearchTextBoxes();
 
@@ -51,6 +54,23 @@ namespace ProyectoNetshop.formularios
 
             // Cargar reporte al abrir el formulario
             CargarReporte();
+        }
+
+        private void HideKPILabels()
+        {
+            try
+            {
+                lbCantidadVentas.Visible = false;
+                lbVentaMasAlta.Visible = false;
+                lbVentaMasBaja.Visible = false;
+                lbPromedioFactura.Visible = false;
+                lbClienteFrecuente.Visible = false;
+                lbDiaMayorFacturacion.Visible = false;
+            }
+            catch
+            {
+                // Si alguna etiqueta no existe en el diseñador, ignorar
+            }
         }
 
         // Busca y enlaza TextChanged en los TextBox de búsqueda para filtrar en cada carácter
@@ -95,6 +115,7 @@ namespace ProyectoNetshop.formularios
                 dgvReporteVentaVendedor.Visible = false;
                 // actualizar chart y total vacío
                 ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
+                ActualizarKPIsDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -177,6 +198,7 @@ namespace ProyectoNetshop.formularios
                 dgvReporteVentaVendedor.Visible = false;
                 // actualizar chart y total vacío
                 ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
+                ActualizarKPIsDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -197,8 +219,9 @@ namespace ProyectoNetshop.formularios
             {
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
-                // actualizar chart y total vacío
+                // actualizar chart y total vacío y ocultar KPIs
                 ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
+                ActualizarKPIsDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -277,6 +300,9 @@ namespace ProyectoNetshop.formularios
 
             // Actualizar chart y total cada vez que cambiamos lo que se muestra en la grilla
             ActualizarChartDesdeDatos(datos);
+
+            // Actualizar KPIs visibles según los datos actuales y rango de fechas
+            ActualizarKPIsDesdeDatos(datos);
         }
 
         // Actualiza chReporteVendedor usando los datos actualmente mostrados (agrega las cantidades por producto)
@@ -386,6 +412,118 @@ namespace ProyectoNetshop.formularios
             }
         }
 
+        // Actualiza KPIs visibles según los datos filtrados y rango de fechas
+        private void ActualizarKPIsDesdeDatos(IEnumerable<(string nroFactura, DateTime fecha, string cliente, string tipoFactura, string producto, int cantidad, decimal precioUnitario, decimal totalPorProducto, string estado)> datos)
+        {
+            try
+            {
+                // Si rango inválido, ocultar todo
+                DateTime desde = fechaDesdeVendedor.Value.Date;
+                DateTime hasta = fechaHastaVendedor.Value.Date;
+                if (desde > hasta)
+                {
+                    HideKPILabels();
+                    return;
+                }
+
+                var lista = datos?.ToList() ?? new List<(string, DateTime, string, string, string, int, decimal, decimal, string)>();
+                if (!lista.Any())
+                {
+                    HideKPILabels();
+                    return;
+                }
+
+                // Agrupar por factura (nro_factura) para calcular totales por factura
+                var facturas = lista
+                    .Where(d => !string.IsNullOrEmpty(d.nroFactura))
+                    .GroupBy(d => d.nroFactura)
+                    .Select(g => new
+                    {
+                        Nro = g.Key,
+                        TotalFactura = g.Sum(x => x.totalPorProducto),
+                        Cliente = g.Select(x => x.cliente).FirstOrDefault(),
+                        Fecha = g.Select(x => x.fecha).FirstOrDefault()
+                    })
+                    .ToList();
+
+                // Cantidad de ventas = número de facturas únicas (si no hay nro, contar como 0)
+                int cantidadVentas = facturas.Count;
+
+                // Venta más alta (por factura)
+                decimal ventaMasAlta = facturas.Any() ? facturas.Max(f => f.TotalFactura) : 0m;
+
+                // Venta más baja (por factura)
+                decimal ventaMasBaja = facturas.Any() ? facturas.Min(f => f.TotalFactura) : 0m;
+
+                // Promedio por factura
+                decimal promedioFactura = facturas.Any() ? facturas.Average(f => f.TotalFactura) : 0m;
+
+                // Cliente más frecuente -> contar facturas por cliente
+                string clienteFrecuente = facturas
+                    .Where(f => !string.IsNullOrEmpty(f.Cliente))
+                    .GroupBy(f => f.Cliente)
+                    .OrderByDescending(g => g.Count())
+                    .ThenByDescending(g => g.Sum(f => f.TotalFactura))
+                    .Select(g => g.Key)
+                    .FirstOrDefault() ?? "-";
+
+                // Día con mayor facturación (sumar totales por fecha)
+                var diaMayor = facturas
+                    .Where(f => f.Fecha != DateTime.MinValue)
+                    .GroupBy(f => f.Fecha.Date)
+                    .Select(g => new { Fecha = g.Key, Total = g.Sum(f => f.TotalFactura) })
+                    .OrderByDescending(x => x.Total)
+                    .FirstOrDefault();
+
+                var cultura = new CultureInfo("es-AR");
+
+                // Mostrar y asignar textos
+                if (this.lbCantidadVentas != null)
+                {
+                    lbCantidadVentas.Text = cantidadVentas.ToString();
+                    lbCantidadVentas.Visible = true;
+                }
+
+                if (this.lbVentaMasAlta != null)
+                {
+                    lbVentaMasAlta.Text = ventaMasAlta.ToString("C", cultura);
+                    lbVentaMasAlta.Visible = true;
+                }
+
+                if (this.lbVentaMasBaja != null)
+                {
+                    lbVentaMasBaja.Text = ventaMasBaja.ToString("C", cultura);
+                    lbVentaMasBaja.Visible = true;
+                }
+
+                if (this.lbPromedioFactura != null)
+                {
+                    lbPromedioFactura.Text = promedioFactura.ToString("C", cultura);
+                    lbPromedioFactura.Visible = true;
+                }
+
+                if (this.lbClienteFrecuente != null)
+                {
+                    lbClienteFrecuente.Text = clienteFrecuente;
+                    lbClienteFrecuente.Visible = true;
+                }
+
+                if (this.lbDiaMayorFacturacion != null)
+                {
+                    if (diaMayor != null)
+                        lbDiaMayorFacturacion.Text = $"{diaMayor.Fecha:dd/MM/yyyy} - {diaMayor.Total.ToString("C", cultura)}";
+                    else
+                        lbDiaMayorFacturacion.Text = "-";
+                    lbDiaMayorFacturacion.Visible = true;
+                }
+            }
+            catch
+            {
+                // en caso de error ocultar KPIs para no mostrar datos incoherentes
+                HideKPILabels();
+            }
+        }
+
         private string GetTextBoxText(string name)
         {
             var encontrados = this.Controls.Find(name, true);
@@ -448,6 +586,7 @@ namespace ProyectoNetshop.formularios
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
                 ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
+                ActualizarKPIsDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
