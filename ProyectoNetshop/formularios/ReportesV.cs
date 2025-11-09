@@ -246,8 +246,8 @@ namespace ProyectoNetshop.formularios
             var filtrados = reporteOriginal.Where(r =>
                 (string.IsNullOrEmpty(filtroNroFactura) || (r.nroFactura ?? "").ToLower().Contains(filtroNroFactura)) &&
                 (string.IsNullOrEmpty(filtroProducto) || (r.producto ?? "").ToLower().Contains(filtroProducto)) &&
-                (!precioMin.HasValue || r.precioUnitario >= precioMin.Value) &&
-                (!precioMax.HasValue || r.precioUnitario <= precioMax.Value)
+                (!precioMin.HasValue || r.totalPorProducto >= precioMin.Value) &&
+                (!precioMax.HasValue || r.totalPorProducto <= precioMax.Value)
             ).ToList();
 
             MostrarEnGrilla(filtrados);
@@ -293,11 +293,12 @@ namespace ProyectoNetshop.formularios
                     .GroupBy(d => d.producto)
                     .Select(g => new { Producto = g.Key, Cantidad = g.Sum(x => x.cantidad) })
                     .OrderByDescending(x => x.Cantidad)
-                    .Take(3) // <= solo los 3 con mayor cantidad
+                    .Take(3) // solo los 3 con mayor cantidad
                     .ToList();
 
                 chReporteVendedor.Series.Clear();
                 chReporteVendedor.Titles.Clear();
+                chReporteVendedor.Legends.Clear();
 
                 // Asegurar ChartArea
                 if (chReporteVendedor.ChartAreas.Count == 0)
@@ -306,19 +307,30 @@ namespace ProyectoNetshop.formularios
                 // Mostrar título
                 chReporteVendedor.Titles.Add("Top 3 productos por cantidad");
 
+                // Asegurar leyenda (opcional)
+                var legend = new Legend("DefaultLegend")
+                {
+                    Docking = Docking.Right,
+                    LegendStyle = LegendStyle.Table
+                };
+                chReporteVendedor.Legends.Add(legend);
+
                 var serie = new Series("Cantidad")
                 {
-                    ChartType = SeriesChartType.Radar,
+                    ChartType = SeriesChartType.Pie,
                     IsValueShownAsLabel = true
                 };
 
+                // Etiquetas fuera del gráfico para pie
+                serie["PieLabelStyle"] = "Outside";
+                serie["PieDrawingStyle"] = "Concave";
+
                 chReporteVendedor.Series.Add(serie);
 
-                // Si no hay datos, ocultar chart
+                // Si no hay datos, ocultar chart y actualizar total a 0
                 if (agrupado.Count == 0)
                 {
                     chReporteVendedor.Visible = false;
-                    // actualizar total a 0
                     ActualizarTotalVendidoDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                     return;
                 }
@@ -326,18 +338,24 @@ namespace ProyectoNetshop.formularios
                 // Añadir puntos: máximo 3 productos
                 foreach (var item in agrupado)
                 {
-                    int idx = serie.Points.AddXY(item.Producto, item.Cantidad);
-                    var dataPoint = serie.Points[idx];
-                    dataPoint.ToolTip = $"{item.Producto}: {item.Cantidad}";
-                    dataPoint.Label = item.Cantidad.ToString();
+                    var point = new DataPoint
+                    {
+                        YValues = new double[] { (double)item.Cantidad },
+                        AxisLabel = item.Producto,
+                        LegendText = item.Producto
+                    };
+
+                    // etiqueta construida explícitamente para evitar la macro que mostraba "0:"
+                    point.Label = $"{item.Producto}: {item.Cantidad}";
+                    point.ToolTip = $"{item.Producto}: {item.Cantidad}";
+
+                    serie.Points.Add(point);
                 }
 
                 // Ajustes estéticos
                 var area = chReporteVendedor.ChartAreas[0];
-                area.AxisX.LabelStyle.Angle = -30;
-                //area.AxisX.Interval = 1;
-                area.AxisX.MajorGrid.Enabled = false;
-                area.AxisY.MajorGrid.Enabled = true;
+                area.Area3DStyle.Enable3D = false;
+                area.Position.Auto = true;
 
                 chReporteVendedor.Visible = true;
 
@@ -437,7 +455,7 @@ namespace ProyectoNetshop.formularios
             CargarReporte();
         }
 
-        // Permite dígitos, control y un separador decimal; normaliza '.' a ','
+        // Permite dígitos, control y un separador decimal; normaliza '.' a ',')
         private void PrecioTextBox_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (sender is not TextBox tb)
