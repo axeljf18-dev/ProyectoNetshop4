@@ -32,6 +32,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             panel2 = new Panel();
+            bGenerarPdfReporteVendedor = new Button();
             tbBusquedaPrecioMinProductoDF = new TextBox();
             tbBusquedaNroFProductoDF = new TextBox();
             tbNombreVendedorReporte = new TextBox();
@@ -79,6 +80,7 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(0, 0, 64);
+            panel2.Controls.Add(bGenerarPdfReporteVendedor);
             panel2.Controls.Add(tbBusquedaPrecioMinProductoDF);
             panel2.Controls.Add(tbBusquedaNroFProductoDF);
             panel2.Controls.Add(tbNombreVendedorReporte);
@@ -92,6 +94,19 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(859, 144);
             panel2.TabIndex = 4;
+            // 
+            // bGenerarPdfReporteVendedor
+            // 
+            bGenerarPdfReporteVendedor.Cursor = Cursors.Hand;
+            bGenerarPdfReporteVendedor.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
+            bGenerarPdfReporteVendedor.ForeColor = SystemColors.ActiveCaptionText;
+            bGenerarPdfReporteVendedor.Location = new Point(666, 91);
+            bGenerarPdfReporteVendedor.Margin = new Padding(3, 2, 3, 2);
+            bGenerarPdfReporteVendedor.Name = "bGenerarPdfReporteVendedor";
+            bGenerarPdfReporteVendedor.Size = new Size(119, 34);
+            bGenerarPdfReporteVendedor.TabIndex = 38;
+            bGenerarPdfReporteVendedor.Text = "Generar PDF";
+            bGenerarPdfReporteVendedor.UseVisualStyleBackColor = true;
             // 
             // tbBusquedaPrecioMinProductoDF
             // 
@@ -540,5 +555,6 @@
         private Label lbPromedioFactura;
         private Label lbClienteFrecuente;
         private Label lbDiaMayorFacturacion;
+        private Button bGenerarPdfReporteVendedor;
     }
 }

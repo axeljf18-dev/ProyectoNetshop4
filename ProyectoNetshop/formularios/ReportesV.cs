@@ -11,6 +11,10 @@ using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using ProyectoNetshop.BD;
 using System.Windows.Forms.DataVisualization.Charting;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Diagnostics;
 
 namespace ProyectoNetshop.formularios
 {
@@ -51,6 +55,17 @@ namespace ProyectoNetshop.formularios
 
             // Enlazar cambios de fecha para recargar filtro por rango
             WireDatePickers();
+
+            // Enlazar botón PDF (si existe)
+            try
+            {
+                bGenerarPdfReporteVendedor.Click -= bGenerarPdfReporteVendedor_Click;
+                bGenerarPdfReporteVendedor.Click += bGenerarPdfReporteVendedor_Click;
+            }
+            catch
+            {
+                // ignorar si no existe el control
+            }
 
             // Cargar reporte al abrir el formulario
             CargarReporte();
@@ -124,7 +139,7 @@ namespace ProyectoNetshop.formularios
             dgvReporteVentaVendedor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvReporteVentaVendedor.AllowUserToAddRows = false;
             dgvReporteVentaVendedor.ReadOnly = true;
-            dgvReporteVentaVendedor.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvReporteVentaVendedor.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, FontStyle.Bold);
 
             DateTime desde = desdeCheck;
             DateTime hasta = hastaCheck.AddDays(1); // incluir todo el día "hasta"
@@ -521,6 +536,184 @@ namespace ProyectoNetshop.formularios
             {
                 // en caso de error ocultar KPIs para no mostrar datos incoherentes
                 HideKPILabels();
+            }
+        }
+
+        // Añadido: genera un PDF temporal para visualizar y permite guardar si el usuario lo desea
+        private void bGenerarPdfReporteVendedor_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvReporteVentaVendedor.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay datos para generar el PDF.", "Sin datos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                string vendedor = tbNombreVendedorReporte?.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(vendedor))
+                    vendedor = nombreCompleto ?? "Vendedor";
+
+                string tempFile = Path.Combine(Path.GetTempPath(), $"ReporteVendedor_{vendedor.Replace(' ', '_')}_{DateTime.Now:yyyyMMddHHmmss}.pdf");
+
+                // Crear PDF temporal
+                using (FileStream fs = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (Document doc = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20))
+                {
+                    PdfWriter.GetInstance(doc, fs);
+                    doc.Open();
+
+                    var fuenteTitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                    var fuenteNormal = FontFactory.GetFont(FontFactory.HELVETICA, 10);
+                    var fuenteTabla = FontFactory.GetFont(FontFactory.HELVETICA, 9);
+                    var cultura = new CultureInfo("es-AR");
+
+                    // Título y fecha/hora
+                    doc.Add(new Paragraph($"Reporte de ventas del vendedor: \"{vendedor}\"", fuenteTitulo));
+                    doc.Add(new Paragraph($"Generado: {DateTime.Now:dd/MM/yyyy HH:mm}", fuenteNormal));
+                    doc.Add(new Paragraph(" "));
+
+                    // Tabla con las columnas del DataGridView
+                    int columnas = dgvReporteVentaVendedor.Columns.Count;
+                    PdfPTable tablaPdf = new PdfPTable(columnas) { WidthPercentage = 100 };
+
+                    // Encabezados
+                    foreach (DataGridViewColumn col in dgvReporteVentaVendedor.Columns)
+                    {
+                        string header = string.IsNullOrWhiteSpace(col.HeaderText) ? col.Name : col.HeaderText;
+                        tablaPdf.AddCell(new PdfPCell(new Phrase(header, fuenteTabla)) { BackgroundColor = BaseColor.LIGHT_GRAY });
+                    }
+
+                    // Filas
+                    foreach (DataGridViewRow fila in dgvReporteVentaVendedor.Rows)
+                    {
+                        if (fila.IsNewRow) continue;
+
+                        for (int c = 0; c < columnas; c++)
+                        {
+                            object valor = fila.Cells[c].Value;
+                            string texto = "";
+
+                            if (valor == null)
+                            {
+                                texto = "";
+                            }
+                            else if (valor is DateTime dt)
+                            {
+                                texto = dt.ToString("dd/MM/yyyy");
+                            }
+                            else
+                            {
+                                // Intentar parsear números para formatear moneda si procede
+                                string s = valor.ToString();
+                                if (decimal.TryParse(s, NumberStyles.Currency | NumberStyles.Number, cultura, out var monto))
+                                    texto = monto.ToString("C", cultura);
+                                else
+                                    texto = s;
+                            }
+
+                            tablaPdf.AddCell(new PdfPCell(new Phrase(texto, fuenteTabla)));
+                        }
+                    }
+
+                    doc.Add(tablaPdf);
+
+                    // Calcular total sumando la columna "Total" (índice 6 según diseño) si es posible,
+                    // si no, intentar sumar cualquier columna con nombre que contenga "total"
+                    decimal total = 0m;
+                    bool totalCalculado = false;
+
+                    // Intentar sumar columna indexada 6 (totalPorProducto según MostrarEnGrilla)
+                    int indiceTotal = -1;
+                    if (dgvReporteVentaVendedor.Columns.Count > 6)
+                        indiceTotal = 6;
+
+                    if (indiceTotal >= 0)
+                    {
+                        foreach (DataGridViewRow fila in dgvReporteVentaVendedor.Rows)
+                        {
+                            if (fila.IsNewRow) continue;
+                            var val = fila.Cells[indiceTotal].Value?.ToString();
+                            if (decimal.TryParse(val, NumberStyles.Currency | NumberStyles.Number, cultura, out var v))
+                            {
+                                total += v;
+                                totalCalculado = true;
+                            }
+                        }
+                    }
+
+                    if (!totalCalculado)
+                    {
+                        // buscar columna con nombre que contenga "total"
+                        for (int c = 0; c < dgvReporteVentaVendedor.Columns.Count && !totalCalculado; c++)
+                        {
+                            var name = dgvReporteVentaVendedor.Columns[c].Name?.ToLower() ?? "";
+                            var header = dgvReporteVentaVendedor.Columns[c].HeaderText?.ToLower() ?? "";
+                            if (name.Contains("total") || header.Contains("total"))
+                            {
+                                foreach (DataGridViewRow fila in dgvReporteVentaVendedor.Rows)
+                                {
+                                    if (fila.IsNewRow) continue;
+                                    var val = fila.Cells[c].Value?.ToString();
+                                    if (decimal.TryParse(val, NumberStyles.Currency | NumberStyles.Number, cultura, out var v))
+                                    {
+                                        total += v;
+                                        totalCalculado = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Agregar total al final
+                    doc.Add(new Paragraph(" "));
+                    doc.Add(new Paragraph($"TOTAL: {total.ToString("C", cultura)}", fuenteTitulo));
+
+                    doc.Close();
+                    fs.Close();
+                }
+
+                // Abrir para visualizar con el visor de PDF predeterminado
+                try
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo(tempFile) { UseShellExecute = true };
+                    Process proc = Process.Start(psi);
+                }
+                catch
+                {
+                    MessageBox.Show("No se pudo abrir el visor de PDF. El archivo se creó en: " + tempFile, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // Después de visualizar, preguntar si desea guardarlo
+                var guardar = MessageBox.Show("¿Desea guardar este PDF en disco?", "Guardar PDF", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (guardar == DialogResult.Yes)
+                {
+                    using var sfd = new SaveFileDialog
+                    {
+                        Filter = "PDF (*.pdf)|*.pdf",
+                        FileName = $"Reporte_Ventas_{vendedor.Replace(' ', '_')}_{DateTime.Now:yyyyMMddHHmmss}.pdf",
+                        DefaultExt = "pdf",
+                        AddExtension = true,
+                        InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                    };
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            File.Copy(tempFile, sfd.FileName, true);
+                            MessageBox.Show("PDF guardado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error al guardar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generando PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
