@@ -60,10 +60,9 @@
             // 
             BGenerarTotalVentasGerente.Cursor = Cursors.Hand;
             BGenerarTotalVentasGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            BGenerarTotalVentasGerente.Location = new Point(15, 747);
-            BGenerarTotalVentasGerente.Margin = new Padding(3, 4, 3, 4);
+            BGenerarTotalVentasGerente.Location = new Point(13, 560);
             BGenerarTotalVentasGerente.Name = "BGenerarTotalVentasGerente";
-            BGenerarTotalVentasGerente.Size = new Size(258, 53);
+            BGenerarTotalVentasGerente.Size = new Size(226, 40);
             BGenerarTotalVentasGerente.TabIndex = 0;
             BGenerarTotalVentasGerente.Text = "Total de Ventas";
             BGenerarTotalVentasGerente.UseVisualStyleBackColor = true;
@@ -80,9 +79,8 @@
             panel1.Controls.Add(BGenerarTotalVentasGerente);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(288, 800);
+            panel1.Size = new Size(252, 600);
             panel1.TabIndex = 1;
             // 
             // label1
@@ -91,9 +89,9 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(118, 184);
+            label1.Location = new Point(103, 138);
             label1.Name = "label1";
-            label1.Size = new Size(57, 29);
+            label1.Size = new Size(44, 22);
             label1.TabIndex = 20;
             label1.Text = "Desde";
             // 
@@ -103,36 +101,33 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label7.ForeColor = SystemColors.ButtonFace;
-            label7.Location = new Point(118, 301);
+            label7.Location = new Point(103, 226);
             label7.Name = "label7";
-            label7.Size = new Size(54, 29);
+            label7.Size = new Size(42, 22);
             label7.TabIndex = 19;
             label7.Text = "Hasta";
             // 
             // fechaHastaGerente
             // 
-            fechaHastaGerente.Location = new Point(40, 335);
-            fechaHastaGerente.Margin = new Padding(3, 4, 3, 4);
+            fechaHastaGerente.Location = new Point(35, 251);
             fechaHastaGerente.Name = "fechaHastaGerente";
-            fechaHastaGerente.Size = new Size(209, 27);
+            fechaHastaGerente.Size = new Size(183, 23);
             fechaHastaGerente.TabIndex = 18;
             // 
             // fechaDesdeGerente
             // 
-            fechaDesdeGerente.Location = new Point(40, 217);
-            fechaDesdeGerente.Margin = new Padding(3, 4, 3, 4);
+            fechaDesdeGerente.Location = new Point(35, 163);
             fechaDesdeGerente.Name = "fechaDesdeGerente";
-            fechaDesdeGerente.Size = new Size(209, 27);
+            fechaDesdeGerente.Size = new Size(183, 23);
             fechaDesdeGerente.TabIndex = 17;
             // 
             // BGenerarVentasPorVendedorGerente
             // 
             BGenerarVentasPorVendedorGerente.Cursor = Cursors.Hand;
             BGenerarVentasPorVendedorGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            BGenerarVentasPorVendedorGerente.Location = new Point(15, 641);
-            BGenerarVentasPorVendedorGerente.Margin = new Padding(3, 4, 3, 4);
+            BGenerarVentasPorVendedorGerente.Location = new Point(13, 481);
             BGenerarVentasPorVendedorGerente.Name = "BGenerarVentasPorVendedorGerente";
-            BGenerarVentasPorVendedorGerente.Size = new Size(258, 53);
+            BGenerarVentasPorVendedorGerente.Size = new Size(226, 40);
             BGenerarVentasPorVendedorGerente.TabIndex = 2;
             BGenerarVentasPorVendedorGerente.Text = "Ventas por Vendedor";
             BGenerarVentasPorVendedorGerente.UseVisualStyleBackColor = true;
@@ -141,10 +136,9 @@
             // 
             BGenerarProductosVendidosGerente.Cursor = Cursors.Hand;
             BGenerarProductosVendidosGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            BGenerarProductosVendidosGerente.Location = new Point(15, 694);
-            BGenerarProductosVendidosGerente.Margin = new Padding(3, 4, 3, 4);
+            BGenerarProductosVendidosGerente.Location = new Point(13, 520);
             BGenerarProductosVendidosGerente.Name = "BGenerarProductosVendidosGerente";
-            BGenerarProductosVendidosGerente.Size = new Size(258, 53);
+            BGenerarProductosVendidosGerente.Size = new Size(226, 40);
             BGenerarProductosVendidosGerente.TabIndex = 1;
             BGenerarProductosVendidosGerente.Text = "Productos Vendidos";
             BGenerarProductosVendidosGerente.UseVisualStyleBackColor = true;
@@ -156,18 +150,18 @@
             panel2.Controls.Add(clbVendedoresReporteGerente);
             panel2.Controls.Add(label2);
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(288, 0);
-            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Location = new Point(252, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(912, 133);
+            panel2.Size = new Size(798, 100);
             panel2.TabIndex = 2;
             // 
             // clbVendedoresReporteGerente
             // 
             clbVendedoresReporteGerente.FormattingEnabled = true;
-            clbVendedoresReporteGerente.Location = new Point(154, 22);
+            clbVendedoresReporteGerente.Location = new Point(135, 16);
+            clbVendedoresReporteGerente.Margin = new Padding(3, 2, 3, 2);
             clbVendedoresReporteGerente.Name = "clbVendedoresReporteGerente";
-            clbVendedoresReporteGerente.Size = new Size(388, 26);
+            clbVendedoresReporteGerente.Size = new Size(340, 4);
             clbVendedoresReporteGerente.TabIndex = 26;
             // 
             // label2
@@ -176,19 +170,20 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label2.ForeColor = SystemColors.ButtonFace;
-            label2.Location = new Point(65, 22);
+            label2.Location = new Point(57, 16);
             label2.Name = "label2";
-            label2.Size = new Size(83, 29);
+            label2.Size = new Size(64, 22);
             label2.TabIndex = 21;
             label2.Text = "Vendedor";
             // 
             // dgvReporteGerente
             // 
             dgvReporteGerente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReporteGerente.Location = new Point(314, 200);
+            dgvReporteGerente.Location = new Point(275, 150);
+            dgvReporteGerente.Margin = new Padding(3, 2, 3, 2);
             dgvReporteGerente.Name = "dgvReporteGerente";
             dgvReporteGerente.RowHeadersWidth = 51;
-            dgvReporteGerente.Size = new Size(862, 501);
+            dgvReporteGerente.Size = new Size(754, 376);
             dgvReporteGerente.TabIndex = 26;
             dgvReporteGerente.Visible = false;
             dgvReporteGerente.CellContentClick += dgvReporteGerente_CellContentClick;
@@ -198,9 +193,9 @@
             lTotalInfoReporteGerente.AutoSize = true;
             lTotalInfoReporteGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
             lTotalInfoReporteGerente.ForeColor = SystemColors.ButtonFace;
-            lTotalInfoReporteGerente.Location = new Point(927, 704);
+            lTotalInfoReporteGerente.Location = new Point(811, 528);
             lTotalInfoReporteGerente.Name = "lTotalInfoReporteGerente";
-            lTotalInfoReporteGerente.Size = new Size(81, 34);
+            lTotalInfoReporteGerente.Size = new Size(64, 27);
             lTotalInfoReporteGerente.TabIndex = 27;
             lTotalInfoReporteGerente.Text = "TOTAL:";
             lTotalInfoReporteGerente.Visible = false;
@@ -210,9 +205,9 @@
             lbTotalVendidoReporteGerente.AutoSize = true;
             lbTotalVendidoReporteGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
             lbTotalVendidoReporteGerente.ForeColor = SystemColors.ButtonFace;
-            lbTotalVendidoReporteGerente.Location = new Point(1014, 704);
+            lbTotalVendidoReporteGerente.Location = new Point(887, 528);
             lbTotalVendidoReporteGerente.Name = "lbTotalVendidoReporteGerente";
-            lbTotalVendidoReporteGerente.Size = new Size(63, 34);
+            lbTotalVendidoReporteGerente.Size = new Size(51, 27);
             lbTotalVendidoReporteGerente.TabIndex = 28;
             lbTotalVendidoReporteGerente.Text = "$0,00";
             lbTotalVendidoReporteGerente.Visible = false;
@@ -225,9 +220,10 @@
             cbVentasFinalizadasReporteGerentes.Cursor = Cursors.Hand;
             cbVentasFinalizadasReporteGerentes.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic);
             cbVentasFinalizadasReporteGerentes.ForeColor = SystemColors.ButtonFace;
-            cbVentasFinalizadasReporteGerentes.Location = new Point(314, 703);
+            cbVentasFinalizadasReporteGerentes.Location = new Point(275, 527);
+            cbVentasFinalizadasReporteGerentes.Margin = new Padding(3, 2, 3, 2);
             cbVentasFinalizadasReporteGerentes.Name = "cbVentasFinalizadasReporteGerentes";
-            cbVentasFinalizadasReporteGerentes.Size = new Size(101, 33);
+            cbVentasFinalizadasReporteGerentes.Size = new Size(81, 26);
             cbVentasFinalizadasReporteGerentes.TabIndex = 29;
             cbVentasFinalizadasReporteGerentes.Text = "Vendidos";
             cbVentasFinalizadasReporteGerentes.UseVisualStyleBackColor = true;
@@ -239,9 +235,10 @@
             cbVentasCanceladasReporteGerentes.Cursor = Cursors.Hand;
             cbVentasCanceladasReporteGerentes.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic);
             cbVentasCanceladasReporteGerentes.ForeColor = SystemColors.ButtonFace;
-            cbVentasCanceladasReporteGerentes.Location = new Point(431, 703);
+            cbVentasCanceladasReporteGerentes.Location = new Point(377, 527);
+            cbVentasCanceladasReporteGerentes.Margin = new Padding(3, 2, 3, 2);
             cbVentasCanceladasReporteGerentes.Name = "cbVentasCanceladasReporteGerentes";
-            cbVentasCanceladasReporteGerentes.Size = new Size(115, 33);
+            cbVentasCanceladasReporteGerentes.Size = new Size(91, 26);
             cbVentasCanceladasReporteGerentes.TabIndex = 30;
             cbVentasCanceladasReporteGerentes.Text = "Cancelados";
             cbVentasCanceladasReporteGerentes.UseVisualStyleBackColor = true;
@@ -250,46 +247,51 @@
             // 
             // tbBusquedaPrecioMaxReporteG
             // 
-            tbBusquedaPrecioMaxReporteG.Location = new Point(1026, 167);
+            tbBusquedaPrecioMaxReporteG.Location = new Point(898, 125);
+            tbBusquedaPrecioMaxReporteG.Margin = new Padding(3, 2, 3, 2);
             tbBusquedaPrecioMaxReporteG.Name = "tbBusquedaPrecioMaxReporteG";
             tbBusquedaPrecioMaxReporteG.PlaceholderText = "Precio maximo";
-            tbBusquedaPrecioMaxReporteG.Size = new Size(150, 27);
+            tbBusquedaPrecioMaxReporteG.Size = new Size(132, 23);
             tbBusquedaPrecioMaxReporteG.TabIndex = 31;
             tbBusquedaPrecioMaxReporteG.Visible = false;
             // 
             // tbBusquedaPrecioMinReporteG
             // 
-            tbBusquedaPrecioMinReporteG.Location = new Point(1026, 134);
+            tbBusquedaPrecioMinReporteG.Location = new Point(898, 100);
+            tbBusquedaPrecioMinReporteG.Margin = new Padding(3, 2, 3, 2);
             tbBusquedaPrecioMinReporteG.Name = "tbBusquedaPrecioMinReporteG";
             tbBusquedaPrecioMinReporteG.PlaceholderText = "Precio minimo";
-            tbBusquedaPrecioMinReporteG.Size = new Size(150, 27);
+            tbBusquedaPrecioMinReporteG.Size = new Size(132, 23);
             tbBusquedaPrecioMinReporteG.TabIndex = 32;
             tbBusquedaPrecioMinReporteG.Visible = false;
             // 
             // tbBusquedaNroFacturaReporteG
             // 
-            tbBusquedaNroFacturaReporteG.Location = new Point(858, 167);
+            tbBusquedaNroFacturaReporteG.Location = new Point(751, 125);
+            tbBusquedaNroFacturaReporteG.Margin = new Padding(3, 2, 3, 2);
             tbBusquedaNroFacturaReporteG.Name = "tbBusquedaNroFacturaReporteG";
             tbBusquedaNroFacturaReporteG.PlaceholderText = "Numero de factura";
-            tbBusquedaNroFacturaReporteG.Size = new Size(150, 27);
+            tbBusquedaNroFacturaReporteG.Size = new Size(132, 23);
             tbBusquedaNroFacturaReporteG.TabIndex = 33;
             tbBusquedaNroFacturaReporteG.Visible = false;
             // 
             // tbBusquedaClienteReporteG
             // 
-            tbBusquedaClienteReporteG.Location = new Point(858, 134);
+            tbBusquedaClienteReporteG.Location = new Point(751, 100);
+            tbBusquedaClienteReporteG.Margin = new Padding(3, 2, 3, 2);
             tbBusquedaClienteReporteG.Name = "tbBusquedaClienteReporteG";
             tbBusquedaClienteReporteG.PlaceholderText = "Nombre del cliente";
-            tbBusquedaClienteReporteG.Size = new Size(150, 27);
+            tbBusquedaClienteReporteG.Size = new Size(132, 23);
             tbBusquedaClienteReporteG.TabIndex = 34;
             tbBusquedaClienteReporteG.Visible = false;
             // 
             // tbBusquedaProductoReporteG
             // 
-            tbBusquedaProductoReporteG.Location = new Point(679, 167);
+            tbBusquedaProductoReporteG.Location = new Point(594, 125);
+            tbBusquedaProductoReporteG.Margin = new Padding(3, 2, 3, 2);
             tbBusquedaProductoReporteG.Name = "tbBusquedaProductoReporteG";
             tbBusquedaProductoReporteG.PlaceholderText = "Nombre del producto";
-            tbBusquedaProductoReporteG.Size = new Size(160, 27);
+            tbBusquedaProductoReporteG.Size = new Size(140, 23);
             tbBusquedaProductoReporteG.TabIndex = 35;
             tbBusquedaProductoReporteG.Visible = false;
             // 
@@ -298,9 +300,9 @@
             lBuscarPorReporteGerente.AutoSize = true;
             lBuscarPorReporteGerente.Font = new Font("Dubai", 9.749999F, FontStyle.Bold | FontStyle.Italic);
             lBuscarPorReporteGerente.ForeColor = SystemColors.ButtonFace;
-            lBuscarPorReporteGerente.Location = new Point(679, 134);
+            lBuscarPorReporteGerente.Location = new Point(594, 100);
             lBuscarPorReporteGerente.Name = "lBuscarPorReporteGerente";
-            lBuscarPorReporteGerente.Size = new Size(95, 29);
+            lBuscarPorReporteGerente.Size = new Size(73, 22);
             lBuscarPorReporteGerente.TabIndex = 36;
             lBuscarPorReporteGerente.Text = "Buscar por:";
             lBuscarPorReporteGerente.Visible = false;
@@ -310,9 +312,10 @@
             bGenerarPdfReporteGerente.Cursor = Cursors.Hand;
             bGenerarPdfReporteGerente.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
             bGenerarPdfReporteGerente.ForeColor = SystemColors.ActiveCaptionText;
-            bGenerarPdfReporteGerente.Location = new Point(314, 149);
+            bGenerarPdfReporteGerente.Location = new Point(275, 112);
+            bGenerarPdfReporteGerente.Margin = new Padding(3, 2, 3, 2);
             bGenerarPdfReporteGerente.Name = "bGenerarPdfReporteGerente";
-            bGenerarPdfReporteGerente.Size = new Size(136, 45);
+            bGenerarPdfReporteGerente.Size = new Size(119, 34);
             bGenerarPdfReporteGerente.TabIndex = 37;
             bGenerarPdfReporteGerente.Text = "Generar PDF";
             bGenerarPdfReporteGerente.UseVisualStyleBackColor = true;
@@ -320,10 +323,10 @@
             // 
             // Reportes
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(0, 0, 64);
-            ClientSize = new Size(1200, 800);
+            ClientSize = new Size(1050, 600);
             Controls.Add(bGenerarPdfReporteGerente);
             Controls.Add(lBuscarPorReporteGerente);
             Controls.Add(tbBusquedaProductoReporteG);
@@ -339,7 +342,6 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Reportes";
             Text = "Reportes";
             Load += Reportes_Load;

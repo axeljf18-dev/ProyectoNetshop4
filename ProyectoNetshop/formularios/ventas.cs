@@ -1142,7 +1142,7 @@ namespace ProyectoNetshop.formularios
 
         private void LbClientesSugeridos_Click(object sender, EventArgs e)
         {
-            if (lbClientesSugeridos.SelectedItem == null) return;
+            if (lbClientesSugeridos. SelectedItem == null) return;
 
             string clave = lbClientesSugeridos.SelectedItem.ToString();
             if (!clientesMap.ContainsKey(clave)) return;

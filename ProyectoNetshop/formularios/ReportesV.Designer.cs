@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             panel2 = new Panel();
             tbBusquedaPrecioMinProductoDF = new TextBox();
             tbBusquedaNroFProductoDF = new TextBox();
@@ -38,10 +41,13 @@
             tbDniVendedorReporte = new TextBox();
             label3 = new Label();
             panel1 = new Panel();
+            lbTotalVendidoVendedor = new Label();
+            lbTotal = new Label();
             label1 = new Label();
             label7 = new Label();
             fechaHastaVendedor = new DateTimePicker();
             fechaDesdeVendedor = new DateTimePicker();
+            chReporteVendedor = new System.Windows.Forms.DataVisualization.Charting.Chart();
             dgvReporteVentaVendedor = new DataGridView();
             nroFactura = new DataGridViewTextBoxColumn();
             fechaVenta = new DataGridViewTextBoxColumn();
@@ -54,6 +60,7 @@
             producto = new DataGridViewTextBoxColumn();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chReporteVendedor).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvReporteVentaVendedor).BeginInit();
             SuspendLayout();
             // 
@@ -71,7 +78,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(252, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(827, 149);
+            panel2.Size = new Size(838, 144);
             panel2.TabIndex = 4;
             // 
             // tbBusquedaPrecioMinProductoDF
@@ -154,6 +161,8 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(0, 0, 64);
+            panel1.Controls.Add(lbTotalVendidoVendedor);
+            panel1.Controls.Add(lbTotal);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(fechaHastaVendedor);
@@ -161,8 +170,30 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(252, 582);
+            panel1.Size = new Size(252, 595);
             panel1.TabIndex = 3;
+            // 
+            // lbTotalVendidoVendedor
+            // 
+            lbTotalVendidoVendedor.AutoSize = true;
+            lbTotalVendidoVendedor.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
+            lbTotalVendidoVendedor.ForeColor = SystemColors.ButtonFace;
+            lbTotalVendidoVendedor.Location = new Point(105, 559);
+            lbTotalVendidoVendedor.Name = "lbTotalVendidoVendedor";
+            lbTotalVendidoVendedor.Size = new Size(51, 27);
+            lbTotalVendidoVendedor.TabIndex = 30;
+            lbTotalVendidoVendedor.Text = "$0,00";
+            // 
+            // lbTotal
+            // 
+            lbTotal.AutoSize = true;
+            lbTotal.Font = new Font("Dubai", 12F, FontStyle.Bold | FontStyle.Italic);
+            lbTotal.ForeColor = SystemColors.ButtonFace;
+            lbTotal.Location = new Point(35, 559);
+            lbTotal.Name = "lbTotal";
+            lbTotal.Size = new Size(64, 27);
+            lbTotal.TabIndex = 29;
+            lbTotal.Text = "TOTAL:";
             // 
             // label1
             // 
@@ -202,16 +233,33 @@
             fechaDesdeVendedor.Size = new Size(183, 23);
             fechaDesdeVendedor.TabIndex = 17;
             // 
+            // chReporteVendedor
+            // 
+            chReporteVendedor.BackColor = Color.Linen;
+            chartArea1.Name = "ChartArea1";
+            chReporteVendedor.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chReporteVendedor.Legends.Add(legend1);
+            chReporteVendedor.Location = new Point(252, 364);
+            chReporteVendedor.Name = "chReporteVendedor";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chReporteVendedor.Series.Add(series1);
+            chReporteVendedor.Size = new Size(838, 241);
+            chReporteVendedor.TabIndex = 21;
+            chReporteVendedor.Text = "Grafico reporte vendedor";
+            // 
             // dgvReporteVentaVendedor
             // 
             dgvReporteVentaVendedor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvReporteVentaVendedor.Columns.AddRange(new DataGridViewColumn[] { nroFactura, fechaVenta, clienteVenta, tipoFactura, cantidad, precioUnitario, totalVenta, estado, producto });
-            dgvReporteVentaVendedor.Dock = DockStyle.Fill;
-            dgvReporteVentaVendedor.Location = new Point(252, 149);
+            dgvReporteVentaVendedor.Location = new Point(252, 138);
             dgvReporteVentaVendedor.Margin = new Padding(3, 2, 3, 2);
             dgvReporteVentaVendedor.Name = "dgvReporteVentaVendedor";
             dgvReporteVentaVendedor.RowHeadersWidth = 51;
-            dgvReporteVentaVendedor.Size = new Size(827, 433);
+            dgvReporteVentaVendedor.Size = new Size(807, 221);
             dgvReporteVentaVendedor.TabIndex = 5;
             // 
             // nroFactura
@@ -268,13 +316,15 @@
             // 
             producto.HeaderText = "Producto";
             producto.Name = "producto";
+            producto.Width = 81;
             // 
             // ReportesV
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SlateGray;
-            ClientSize = new Size(1079, 582);
+            ClientSize = new Size(1090, 595);
+            Controls.Add(chReporteVendedor);
             Controls.Add(dgvReporteVentaVendedor);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -287,6 +337,7 @@
             panel2.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chReporteVendedor).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvReporteVentaVendedor).EndInit();
             ResumeLayout(false);
         }
@@ -303,6 +354,14 @@
         private DateTimePicker fechaHastaVendedor;
         private DateTimePicker fechaDesdeVendedor;
         private DataGridView dgvReporteVentaVendedor;
+        private TextBox tbBusquedaPrecioMinProductoDF;
+        private TextBox tbBusquedaNroFProductoDF;
+        private TextBox tbBusquedaPrecioMaxProductoDF;
+        private TextBox tbBusquedaNombreProductoDF;
+        private Label label3;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chReporteVendedor;
+        private Label lbTotalVendidoVendedor;
+        private Label lbTotal;
         private DataGridViewTextBoxColumn nroFactura;
         private DataGridViewTextBoxColumn fechaVenta;
         private DataGridViewTextBoxColumn clienteVenta;
@@ -312,10 +371,5 @@
         private DataGridViewTextBoxColumn totalVenta;
         private DataGridViewTextBoxColumn estado;
         private DataGridViewTextBoxColumn producto;
-        private TextBox tbBusquedaPrecioMinProductoDF;
-        private TextBox tbBusquedaNroFProductoDF;
-        private TextBox tbBusquedaPrecioMaxProductoDF;
-        private TextBox tbBusquedaNombreProductoDF;
-        private Label label3;
     }
 }

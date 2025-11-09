@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using ProyectoNetshop.BD;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ProyectoNetshop.formularios
 {
@@ -92,6 +93,8 @@ namespace ProyectoNetshop.formularios
                 reporteOriginal = new List<(string, DateTime, string, string, string, int, decimal, decimal, string)>();
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
+                // actualizar chart y total vacío
+                ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -172,6 +175,8 @@ namespace ProyectoNetshop.formularios
                 // No mostrar nada si no hay resultados
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
+                // actualizar chart y total vacío
+                ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -192,6 +197,8 @@ namespace ProyectoNetshop.formularios
             {
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
+                // actualizar chart y total vacío
+                ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
@@ -267,6 +274,98 @@ namespace ProyectoNetshop.formularios
             }
 
             dgvReporteVentaVendedor.Visible = dgvReporteVentaVendedor.Rows.Count > 0;
+
+            // Actualizar chart y total cada vez que cambiamos lo que se muestra en la grilla
+            ActualizarChartDesdeDatos(datos);
+        }
+
+        // Actualiza chReporteVendedor usando los datos actualmente mostrados (agrega las cantidades por producto)
+        private void ActualizarChartDesdeDatos(IEnumerable<(string nroFactura, DateTime fecha, string cliente, string tipoFactura, string producto, int cantidad, decimal precioUnitario, decimal totalPorProducto, string estado)> datos)
+        {
+            try
+            {
+                if (this.chReporteVendedor == null)
+                    return;
+
+                // Agrupar por producto y sumar cantidades
+                var agrupado = datos
+                    .Where(d => !string.IsNullOrEmpty(d.producto))
+                    .GroupBy(d => d.producto)
+                    .Select(g => new { Producto = g.Key, Cantidad = g.Sum(x => x.cantidad) })
+                    .OrderByDescending(x => x.Cantidad)
+                    .Take(3) // <= solo los 3 con mayor cantidad
+                    .ToList();
+
+                chReporteVendedor.Series.Clear();
+                chReporteVendedor.Titles.Clear();
+
+                // Asegurar ChartArea
+                if (chReporteVendedor.ChartAreas.Count == 0)
+                    chReporteVendedor.ChartAreas.Add(new ChartArea("Default"));
+
+                // Mostrar título
+                chReporteVendedor.Titles.Add("Top 3 productos por cantidad");
+
+                var serie = new Series("Cantidad")
+                {
+                    ChartType = SeriesChartType.Radar,
+                    IsValueShownAsLabel = true
+                };
+
+                chReporteVendedor.Series.Add(serie);
+
+                // Si no hay datos, ocultar chart
+                if (agrupado.Count == 0)
+                {
+                    chReporteVendedor.Visible = false;
+                    // actualizar total a 0
+                    ActualizarTotalVendidoDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
+                    return;
+                }
+
+                // Añadir puntos: máximo 3 productos
+                foreach (var item in agrupado)
+                {
+                    int idx = serie.Points.AddXY(item.Producto, item.Cantidad);
+                    var dataPoint = serie.Points[idx];
+                    dataPoint.ToolTip = $"{item.Producto}: {item.Cantidad}";
+                    dataPoint.Label = item.Cantidad.ToString();
+                }
+
+                // Ajustes estéticos
+                var area = chReporteVendedor.ChartAreas[0];
+                area.AxisX.LabelStyle.Angle = -30;
+                //area.AxisX.Interval = 1;
+                area.AxisX.MajorGrid.Enabled = false;
+                area.AxisY.MajorGrid.Enabled = true;
+
+                chReporteVendedor.Visible = true;
+
+                // Actualizar total mostrado en label usando los datos originales visibles
+                ActualizarTotalVendidoDesdeDatos(datos);
+            }
+            catch
+            {
+                // No hacer nada si el chart no está disponible o hay error visual
+            }
+        }
+
+        // Actualiza lbTotalVendidoVendedor con la suma de totalPorProducto de los datos proporcionados
+        private void ActualizarTotalVendidoDesdeDatos(IEnumerable<(string nroFactura, DateTime fecha, string cliente, string tipoFactura, string producto, int cantidad, decimal precioUnitario, decimal totalPorProducto, string estado)> datos)
+        {
+            try
+            {
+                decimal total = datos?.Sum(d => d.totalPorProducto) ?? 0m;
+                var cultura = new CultureInfo("es-AR");
+                if (this.lbTotalVendidoVendedor != null)
+                {
+                    lbTotalVendidoVendedor.Text = total.ToString("C", cultura);
+                }
+            }
+            catch
+            {
+                // ignorar errores de UI
+            }
         }
 
         private string GetTextBoxText(string name)
@@ -277,10 +376,7 @@ namespace ProyectoNetshop.formularios
             return string.Empty;
         }
 
-        // -------------------------
         // Validaciones para precios
-        // -------------------------
-
         private void WireValidationForPrecioTextBoxes()
         {
             string[] nombres = new[]
@@ -333,6 +429,7 @@ namespace ProyectoNetshop.formularios
                 reporteOriginal = new List<(string, DateTime, string, string, string, int, decimal, decimal, string)>();
                 dgvReporteVentaVendedor.Rows.Clear();
                 dgvReporteVentaVendedor.Visible = false;
+                ActualizarChartDesdeDatos(Enumerable.Empty<(string, DateTime, string, string, string, int, decimal, decimal, string)>());
                 return;
             }
 
